@@ -9,13 +9,12 @@ public final class TestDataUtil {
     private TestDataUtil() {
     }
 
-    public static List<ParkingSpace> createParkingSpaces(int allSpacesCount, int occupiedSpacesCount) {
+    public static List<ParkingSpace> createParkingSpaces(int allSpacesCount) {
         List<ParkingSpace> parkingSpaces = new ArrayList<>();
         for (int i = 1; i <= allSpacesCount; i++) {
             ParkingSpace parkingSpace = new ParkingSpace();
             parkingSpace.setId(i);
-            boolean occupied = i <= occupiedSpacesCount;
-            parkingSpace.setOccupied(occupied);
+            parkingSpace.setOccupied(false);
             parkingSpaces.add(parkingSpace);
         }
         return parkingSpaces;

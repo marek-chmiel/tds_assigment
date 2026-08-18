@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 import uk.co.testdrivensolutions.parkinglot.dto.ParkVehicleResponseDTO;
 import uk.co.testdrivensolutions.parkinglot.exception.VehicleAlreadyParkedException;
+import uk.co.testdrivensolutions.parkinglot.model.ParkingSession;
 import uk.co.testdrivensolutions.parkinglot.model.ParkingSpace;
 import uk.co.testdrivensolutions.parkinglot.model.VehicleType;
 import uk.co.testdrivensolutions.parkinglot.repository.ParkingSessionRepository;
@@ -19,7 +20,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -38,33 +41,37 @@ public class ParkingServiceTest {
     void shouldNotAllowToParkTwiceWithTheSameVehicle() {
         //Given
         String vehicleReg = "DUMMY_REG";
-        given(parkingSessionRepository.existsByVehicleReg(vehicleReg)).willReturn(true);
+        given(parkingSessionRepository.existsByVehicleRegAndTimeOutIsNull(vehicleReg)).willReturn(true);
 
         // When
         assertThatExceptionOfType(VehicleAlreadyParkedException.class)
                 .isThrownBy(() -> parkingService.parkVehicle(vehicleReg, VehicleType.SMALL));
-
     }
 
     @Test
-    void shouldParSuccessfully() {
+    void shouldParkSuccessfully() {
         //Given
         String vehicleReg = "DUMMY_REG";
-        given(parkingSessionRepository.existsByVehicleReg(vehicleReg)).willReturn(false);
+        given(parkingSessionRepository.existsByVehicleRegAndTimeOutIsNull(vehicleReg)).willReturn(false);
 
         ParkingSpace parkingSpace = new ParkingSpace();
         parkingSpace.setId(1);
         parkingSpace.setOccupied(false);
         given(parkingSpaceRepository.findFirstByOccupiedFalseOrderByIdAsc()).willReturn(Optional.of(parkingSpace));
 
-        // When
+        when(parkingSessionRepository.save(any(ParkingSession.class))).thenAnswer(invocation -> {
+            ParkingSession parkingSession = invocation.getArgument(0);
+            parkingSession.setId(1L);
+            return parkingSession;
+        });
 
+        // When
         ParkVehicleResponseDTO parkVehicleResponseDTO = parkingService.parkVehicle(vehicleReg, VehicleType.SMALL);
 
+        // Then
         assertThat(parkVehicleResponseDTO).isNotNull();
         assertThat(parkVehicleResponseDTO.vehicleReg()).isEqualTo(vehicleReg);
         assertThat(parkVehicleResponseDTO.spaceNumber()).isEqualTo(parkingSpace.getId());
-
     }
 
     @AfterEach

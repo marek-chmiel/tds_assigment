@@ -6,7 +6,9 @@
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
     <include file="ddl/db.init.changelog.xml" relativeToChangelogFile="true"/>
     <includeAll path="ddl/task1" relativeToChangelogFile="true"/>
+    <includeAll path="ddl/task2" relativeToChangelogFile="true"/>
 
     <includeAll path="data/task1" relativeToChangelogFile="true"/>
+
 
 </databaseChangeLog>

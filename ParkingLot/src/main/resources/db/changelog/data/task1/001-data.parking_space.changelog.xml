@@ -8,15 +8,15 @@
     <changeSet id="task1_2" author="Marek Chmiel" context="dev">
         <insert tableName="parking_space">
             <column name="id">1</column>
-            <column name="occupied">true</column>
+            <column name="occupied">false</column>
         </insert>
         <insert tableName="parking_space">
             <column name="id">2</column>
-            <column name="occupied">true</column>
+            <column name="occupied">false</column>
         </insert>
         <insert tableName="parking_space">
             <column name="id">3</column>
-            <column name="occupied">true</column>
+            <column name="occupied">false</column>
         </insert>
         <insert tableName="parking_space">
             <column name="id">4</column>

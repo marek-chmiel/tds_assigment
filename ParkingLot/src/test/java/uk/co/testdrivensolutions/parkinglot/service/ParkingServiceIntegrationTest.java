@@ -14,7 +14,7 @@ import static uk.co.testdrivensolutions.parkinglot.util.TestDataUtil.createParki
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class ParkingSpaceIntegrationTest {
+public class ParkingServiceIntegrationTest {
     private final static int PARKING_SPACE_COUNT = 10;
     private final static int PARKING_SPACE_OCCUPIED_COUNT = 4;
 
@@ -22,7 +22,7 @@ public class ParkingSpaceIntegrationTest {
     private ParkingSpaceRepository parkingSpaceRepository;
 
     @Autowired
-    private ParkingSpaceService parkingSpaceService;
+    private ParkingService parkingService;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +37,7 @@ public class ParkingSpaceIntegrationTest {
     @Test
     void shouldFetchParkingSpaceStatus() {
         // When
-        ParkingStatusDTO parkingStatus = parkingSpaceService.getParkingStatus();
+        ParkingStatusDTO parkingStatus = parkingService.getParkingStatus();
 
         // Then
         assertThat(parkingStatus.availableSpaces()).isEqualTo(PARKING_SPACE_COUNT - PARKING_SPACE_OCCUPIED_COUNT);

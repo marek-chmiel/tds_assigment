@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-5.0.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="task2_1" author="Marek Chmiel">
+        <createSequence incrementBy="50" sequenceName="parking_session_seq" startValue="1"/>
+    </changeSet>
+    <changeSet id="task2_2" author="Marek Chmiel">
+        <createTable tableName="parking_session">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_parking_session"/>
+            </column>
+            <column name="vehicle_reg" type="VARCHAR(255)"/>
+            <column name="vehicle_type" type="INT"/>
+            <column name="time_in" type="DATETIME(6)"/>
+            <column name="space_number" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="task2_3" author="Marek Chmiel">
+        <addForeignKeyConstraint baseColumnNames="space_number" baseTableName="parking_session"
+                                 constraintName="FK_PARKING_SESSION_ON_SPACE_NUMBER" referencedColumnNames="id"
+                                 referencedTableName="parking_space"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,23 +1,32 @@
 package uk.co.testdrivensolutions.parkinglot.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import uk.co.testdrivensolutions.parkinglot.dto.ParkVehicleRequestDTO;
+import uk.co.testdrivensolutions.parkinglot.dto.ParkVehicleResponseDTO;
 import uk.co.testdrivensolutions.parkinglot.dto.ParkingStatusDTO;
-import uk.co.testdrivensolutions.parkinglot.service.ParkingSpaceService;
+import uk.co.testdrivensolutions.parkinglot.service.ParkingService;
 
 @RestController
 @RequestMapping("/parking")
 public class ParkingController {
 
-    private final ParkingSpaceService parkingSpaceService;
+    private final ParkingService parkingService;
 
-    public ParkingController(ParkingSpaceService parkingSpaceService) {
-        this.parkingSpaceService = parkingSpaceService;
+    public ParkingController(ParkingService parkingService) {
+        this.parkingService = parkingService;
     }
 
     @GetMapping
     public ParkingStatusDTO getStatus() {
-        return parkingSpaceService.getParkingStatus();
+        return parkingService.getParkingStatus();
+    }
+
+    @PostMapping
+    public ResponseEntity<ParkVehicleResponseDTO> parkVehicle(@Valid @RequestBody ParkVehicleRequestDTO request) {
+        ParkVehicleResponseDTO response = parkingService.parkVehicle(request.vehicleReg(), request.vehicleType());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

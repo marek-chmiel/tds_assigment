@@ -2,6 +2,7 @@ package uk.co.testdrivensolutions.parkinglot.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,6 +18,11 @@ public class ParkingSession {
     private VehicleType vehicleType;
 
     private LocalDateTime timeIn;
+
+    private LocalDateTime timeOut;
+
+    private BigDecimal vehicleCharge;
+    private String billId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "space_number", nullable = false)
@@ -61,5 +67,29 @@ public class ParkingSession {
 
     public void setParkingSpace(ParkingSpace parkingSpace) {
         this.parkingSpace = parkingSpace;
+    }
+
+    public LocalDateTime getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(LocalDateTime timeOut) {
+        this.timeOut = timeOut;
+    }
+
+    public BigDecimal getVehicleCharge() {
+        return vehicleCharge;
+    }
+
+    public void setVehicleCharge(BigDecimal vehicleCharge) {
+        this.vehicleCharge = vehicleCharge;
+    }
+
+    public String getBillId() {
+        return billId;
+    }
+
+    public void setBillId(String billId) {
+        this.billId = billId;
     }
 }

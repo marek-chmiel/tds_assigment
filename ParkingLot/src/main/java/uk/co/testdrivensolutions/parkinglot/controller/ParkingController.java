@@ -4,9 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uk.co.testdrivensolutions.parkinglot.dto.ParkVehicleRequestDTO;
-import uk.co.testdrivensolutions.parkinglot.dto.ParkVehicleResponseDTO;
-import uk.co.testdrivensolutions.parkinglot.dto.ParkingStatusDTO;
+import uk.co.testdrivensolutions.parkinglot.dto.*;
 import uk.co.testdrivensolutions.parkinglot.service.ParkingService;
 
 @RestController
@@ -28,5 +26,11 @@ public class ParkingController {
     public ResponseEntity<ParkVehicleResponseDTO> parkVehicle(@Valid @RequestBody ParkVehicleRequestDTO request) {
         ParkVehicleResponseDTO response = parkingService.parkVehicle(request.vehicleReg(), request.vehicleType());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/bill")
+    public ResponseEntity<BillVehicleResponseDTO> billVehicle(@Valid @RequestBody BillVehicleRequestDTO request) {
+        BillVehicleResponseDTO response = parkingService.billVehicle(request.vehicleReg());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
